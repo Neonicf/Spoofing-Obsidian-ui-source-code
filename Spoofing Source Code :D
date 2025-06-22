@@ -1317,6 +1317,7 @@ function Library:AddDraggableMenu(Name: string)
         Size = false,
     })
 
+    -- Create the background image, parented to Background
     local BackgroundImage = Instance.new("ImageLabel")
     BackgroundImage.Name = "BackgroundImage"
     BackgroundImage.Parent = Background
@@ -1325,11 +1326,8 @@ function Library:AddDraggableMenu(Name: string)
     BackgroundImage.BackgroundTransparency = 1
     BackgroundImage.ImageTransparency = 0
     BackgroundImage.ZIndex = 0
-    BackgroundImage.Image = "" -- Set this via ThemeManager later
-    Library.BackgroundImage = BackgroundImage -- assign it here
-
-    BackgroundImage.Image = "rbxassetid://79494682785471" -- now set the image
-end
+    BackgroundImage.Image = "rbxassetid://79494682785471"
+    Library.BackgroundImage = BackgroundImage
 
     local Holder = New("Frame", {
         BackgroundColor3 = "BackgroundColor",
