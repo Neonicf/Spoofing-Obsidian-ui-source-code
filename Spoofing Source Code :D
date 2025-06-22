@@ -1308,50 +1308,26 @@ function Library:AddDraggableButton(Text: string, Func)
 end
 
 function Library:AddDraggableMenu(Name: string)
-    -- Create the menu outline (outer frame, color: Dark)
     local Background = Library:MakeOutline(ScreenGui, Library.CornerRadius, 10)
     Background.AutomaticSize = Enum.AutomaticSize.Y
     Background.Position = UDim2.fromOffset(6, 6)
     Background.Size = UDim2.fromOffset(0, 0)
-    Library:UpdateDPI(Background, { Position = false, Size = false })
-
-    -- The "Holder" is the frame returned by MakeOutline, and is the main menu box
-    local Holder = Background
-
-    -- Set Holder background transparent, or the image won't show!
-    Holder.BackgroundTransparency = 1
-
-    -- Make ALL child frames inside Holder transparent (including Outline/border)
-    for _, child in ipairs(Holder:GetChildren()) do
-        if child:IsA("Frame") then
-            child.BackgroundTransparency = 1
-        end
-    end
-
-    -- Add image as first child of Holder (menu background)
-    local BackgroundImage = New("ImageLabel", {
-        Image = "rbxassetid://607544008", -- Grass image
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ZIndex = 0,
-        Parent = Holder,
-        Name = "BackgroundImage"
+    Library:UpdateDPI(Background, {
+        Position = false,
+        Size = false,
     })
 
-    -- ALL content (the rest of your menu) must have ZIndex >= 1
-    -- Add menu contents to Holder (which is now transparent with an image at the back)
-    local InnerContent = New("Frame", {
-        BackgroundTransparency = 1,
+    local Holder = New("Frame", {
+        BackgroundColor3 = "BackgroundColor",
         Position = UDim2.fromOffset(2, 2),
         Size = UDim2.new(1, -4, 1, -4),
-        Parent = Holder,
-        ZIndex = 1
+        Parent = Background,
     })
     New("UICorner", {
         CornerRadius = UDim.new(0, Library.CornerRadius - 1),
-        Parent = InnerContent,
+        Parent = Holder,
     })
-    Library:MakeLine(InnerContent, {
+    Library:MakeLine(Holder, {
         Position = UDim2.fromOffset(0, 34),
         Size = UDim2.new(1, 0, 0, 1),
     })
@@ -1362,8 +1338,7 @@ function Library:AddDraggableMenu(Name: string)
         Text = Name,
         TextSize = 15,
         TextXAlignment = Enum.TextXAlignment.Left,
-        Parent = InnerContent,
-        ZIndex = 2,
+        Parent = Holder,
     })
     New("UIPadding", {
         PaddingLeft = UDim.new(0, 12),
@@ -1375,8 +1350,7 @@ function Library:AddDraggableMenu(Name: string)
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(0, 35),
         Size = UDim2.new(1, 0, 1, -35),
-        Parent = InnerContent,
-        ZIndex = 2,
+        Parent = Holder,
     })
     New("UIListLayout", {
         Padding = UDim.new(0, 7),
@@ -1390,8 +1364,8 @@ function Library:AddDraggableMenu(Name: string)
         Parent = Container,
     })
 
-    Library:MakeDraggable(Holder, Label, true)
-    return Holder, Container
+    Library:MakeDraggable(Background, Label, true)
+    return Background, Container
 end
 
 --// Context Menu \\--
