@@ -1325,13 +1325,21 @@ function Library:AddDraggableMenu(Name: string)
         BackgroundTransparency = 1,
     })
 
-    local BackgroundImage = New("ImageLabel", {
-        Image = "rbxassetid://79494682785471", -- Replace with your asset id
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ZIndex = -999, -- Make sure everything else is ZIndex 1 or more
-        Parent = Holder,
-    })
+    local TestImage = New("ImageLabel", {
+    Image = "rbxassetid://607544008",
+    Size = UDim2.new(1,0,1,0),
+    BackgroundTransparency = 1,
+    ZIndex = 0,
+    Parent = ScreenGui, -- or your main UI container
+})
+
+local TestFrame = New("Frame", {
+    BackgroundColor3 = Color3.new(1,0,0), -- Red for debugging
+    BackgroundTransparency = 0.5,         -- Should see image through it
+    Size = UDim2.new(1,0,1,0),
+    ZIndex = 1,
+    Parent = ScreenGui,
+})
 
     New("UICorner", {
         CornerRadius = UDim.new(0, Library.CornerRadius - 1),
