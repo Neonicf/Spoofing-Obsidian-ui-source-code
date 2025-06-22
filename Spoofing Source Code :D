@@ -1313,20 +1313,26 @@ function Library:AddDraggableMenu(Name: string)
     Background.AutomaticSize = Enum.AutomaticSize.Y
     Background.Position = UDim2.fromOffset(6, 6)
     Background.Size = UDim2.fromOffset(0, 0)
-    Background.BackgroundTransparency = 1 -- Make sure the background is transparent!
     Library:UpdateDPI(Background, {
         Position = false,
         Size = false,
     })
 
-    -- ADD THE IMAGE BACKGROUND HERE, parented to Background
-    local BackgroundImage = New("ImageLabel", {
-        Image = "rbxassetid://607544008", -- Working grass image
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ZIndex = 0, -- Always at the back
-        Parent = Background, -- Parent to Background (not ScreenGui)
-    })
+    -- Find the dark background frame inside Outline
+    local OutlineDark = Background:FindFirstChildWhichIsA("Frame")
+    if OutlineDark then
+        -- Set the dark outline background transparency to 1 to see the image
+        OutlineDark.BackgroundTransparency = 1
+
+        -- Add image as the first child (so it's under the outline frame)
+        local BackgroundImage = New("ImageLabel", {
+            Image = "rbxassetid://607544008", -- Working grass image
+            Size = UDim2.new(1, 0, 1, 0),
+            BackgroundTransparency = 1,
+            ZIndex = 0,
+            Parent = OutlineDark,
+        })
+    end
 
     -- Now create the Holder, which will be above the image
     local Holder = New("Frame", {
