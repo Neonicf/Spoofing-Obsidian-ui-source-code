@@ -1308,38 +1308,35 @@ function Library:AddDraggableButton(Text: string, Func)
 end
 
 function Library:AddDraggableMenu(Name: string)
+    -- Create the menu outline (background)
     local Background = Library:MakeOutline(ScreenGui, Library.CornerRadius, 10)
     Background.AutomaticSize = Enum.AutomaticSize.Y
     Background.Position = UDim2.fromOffset(6, 6)
     Background.Size = UDim2.fromOffset(0, 0)
+    Background.BackgroundTransparency = 1 -- Make sure the background is transparent!
     Library:UpdateDPI(Background, {
         Position = false,
         Size = false,
     })
 
+    -- ADD THE IMAGE BACKGROUND HERE, parented to Background
+    local BackgroundImage = New("ImageLabel", {
+        Image = "rbxassetid://607544008", -- Working grass image
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        ZIndex = 0, -- Always at the back
+        Parent = Background, -- Parent to Background (not ScreenGui)
+    })
+
+    -- Now create the Holder, which will be above the image
     local Holder = New("Frame", {
         BackgroundColor3 = "BackgroundColor",
+        BackgroundTransparency = 1, -- Transparent so the image shows through
         Position = UDim2.fromOffset(2, 2),
         Size = UDim2.new(1, -4, 1, -4),
         Parent = Background,
-        BackgroundTransparency = 1,
+        ZIndex = 1, -- Above the background image
     })
-
-    local TestImage = New("ImageLabel", {
-    Image = "rbxassetid://607544008",
-    Size = UDim2.new(1,0,1,0),
-    BackgroundTransparency = 1,
-    ZIndex = 0,
-    Parent = ScreenGui, -- or your main UI container
-})
-
-local TestFrame = New("Frame", {
-    BackgroundColor3 = Color3.new(1,0,0), -- Red for debugging
-    BackgroundTransparency = 0.5,         -- Should see image through it
-    Size = UDim2.new(1,0,1,0),
-    ZIndex = 1,
-    Parent = ScreenGui,
-})
 
     New("UICorner", {
         CornerRadius = UDim.new(0, Library.CornerRadius - 1),
@@ -1357,6 +1354,7 @@ local TestFrame = New("Frame", {
         TextSize = 15,
         TextXAlignment = Enum.TextXAlignment.Left,
         Parent = Holder,
+        ZIndex = 2, -- Above Holder
     })
     New("UIPadding", {
         PaddingLeft = UDim.new(0, 12),
@@ -1369,6 +1367,7 @@ local TestFrame = New("Frame", {
         Position = UDim2.fromOffset(0, 35),
         Size = UDim2.new(1, 0, 1, -35),
         Parent = Holder,
+        ZIndex = 2,
     })
     New("UIListLayout", {
         Padding = UDim.new(0, 7),
