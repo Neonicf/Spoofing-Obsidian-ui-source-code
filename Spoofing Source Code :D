@@ -1308,47 +1308,50 @@ function Library:AddDraggableButton(Text: string, Func)
 end
 
 function Library:AddDraggableMenu(Name: string)
-    -- Create the menu outline (background)
+    -- Create the menu outline (outer frame, color: Dark)
     local Background = Library:MakeOutline(ScreenGui, Library.CornerRadius, 10)
     Background.AutomaticSize = Enum.AutomaticSize.Y
     Background.Position = UDim2.fromOffset(6, 6)
     Background.Size = UDim2.fromOffset(0, 0)
-    Library:UpdateDPI(Background, {
-        Position = false,
-        Size = false,
-    })
+    Library:UpdateDPI(Background, { Position = false, Size = false })
 
-    -- Find the dark background frame inside Outline
-    local OutlineDark = Background:FindFirstChildWhichIsA("Frame")
-    if OutlineDark then
-        -- Set the dark outline background transparency to 1 to see the image
-        OutlineDark.BackgroundTransparency = 1
+    -- The "Holder" is the frame returned by MakeOutline, and is the main menu box
+    local Holder = Background
 
-        -- Add image as the first child (so it's under the outline frame)
-        local BackgroundImage = New("ImageLabel", {
-            Image = "rbxassetid://607544008", -- Working grass image
-            Size = UDim2.new(1, 0, 1, 0),
-            BackgroundTransparency = 1,
-            ZIndex = 0,
-            Parent = OutlineDark,
-        })
+    -- Set Holder background transparent, or the image won't show!
+    Holder.BackgroundTransparency = 1
+
+    -- Make ALL child frames inside Holder transparent (including Outline/border)
+    for _, child in ipairs(Holder:GetChildren()) do
+        if child:IsA("Frame") then
+            child.BackgroundTransparency = 1
+        end
     end
 
-    -- Now create the Holder, which will be above the image
-    local Holder = New("Frame", {
-        BackgroundColor3 = "BackgroundColor",
-        BackgroundTransparency = 1, -- Transparent so the image shows through
-        Position = UDim2.fromOffset(2, 2),
-        Size = UDim2.new(1, -4, 1, -4),
-        Parent = Background,
-        ZIndex = 1, -- Above the background image
+    -- Add image as first child of Holder (menu background)
+    local BackgroundImage = New("ImageLabel", {
+        Image = "rbxassetid://607544008", -- Grass image
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        ZIndex = 0,
+        Parent = Holder,
+        Name = "BackgroundImage"
     })
 
+    -- ALL content (the rest of your menu) must have ZIndex >= 1
+    -- Add menu contents to Holder (which is now transparent with an image at the back)
+    local InnerContent = New("Frame", {
+        BackgroundTransparency = 1,
+        Position = UDim2.fromOffset(2, 2),
+        Size = UDim2.new(1, -4, 1, -4),
+        Parent = Holder,
+        ZIndex = 1
+    })
     New("UICorner", {
         CornerRadius = UDim.new(0, Library.CornerRadius - 1),
-        Parent = Holder,
+        Parent = InnerContent,
     })
-    Library:MakeLine(Holder, {
+    Library:MakeLine(InnerContent, {
         Position = UDim2.fromOffset(0, 34),
         Size = UDim2.new(1, 0, 0, 1),
     })
@@ -1359,8 +1362,8 @@ function Library:AddDraggableMenu(Name: string)
         Text = Name,
         TextSize = 15,
         TextXAlignment = Enum.TextXAlignment.Left,
-        Parent = Holder,
-        ZIndex = 2, -- Above Holder
+        Parent = InnerContent,
+        ZIndex = 2,
     })
     New("UIPadding", {
         PaddingLeft = UDim.new(0, 12),
@@ -1372,7 +1375,7 @@ function Library:AddDraggableMenu(Name: string)
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(0, 35),
         Size = UDim2.new(1, 0, 1, -35),
-        Parent = Holder,
+        Parent = InnerContent,
         ZIndex = 2,
     })
     New("UIListLayout", {
@@ -1387,8 +1390,8 @@ function Library:AddDraggableMenu(Name: string)
         Parent = Container,
     })
 
-    Library:MakeDraggable(Background, Label, true)
-    return Background, Container
+    Library:MakeDraggable(Holder, Label, true)
+    return Holder, Container
 end
 
 --// Context Menu \\--
