@@ -1326,7 +1326,10 @@ function Library:AddDraggableMenu(Name: string)
     BackgroundImage.ImageTransparency = 0
     BackgroundImage.ZIndex = 0
     BackgroundImage.Image = "" -- Set this via ThemeManager later
-    Library.BackgroundImage.Image = "rbxassetid://79494682785471"
+    Library.BackgroundImage = BackgroundImage -- assign it here
+
+    BackgroundImage.Image = "rbxassetid://79494682785471" -- now set the image
+end
 
     local Holder = New("Frame", {
         BackgroundColor3 = "BackgroundColor",
