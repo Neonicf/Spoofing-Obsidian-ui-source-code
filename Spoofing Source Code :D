@@ -969,6 +969,17 @@ local ScreenGui = New("ScreenGui", {
 })
 ParentUI(ScreenGui)
 Library.ScreenGui = ScreenGui
+
+local BackgroundImage = New("ImageLabel", {
+    Name = "BackgroundImage",
+    Parent = ScreenGui,
+    Size = UDim2.fromScale(1, 1),
+    Position = UDim2.fromScale(0, 0),
+    Image = "rbxassetid://79494682785471", -- Replace with your image asset ID or URL
+    BackgroundTransparency = 1,
+    ZIndex = 0,
+})
+
 ScreenGui.DescendantRemoving:Connect(function(Instance)
     Library:RemoveFromRegistry(Instance)
     Library.DPIRegistry[Instance] = nil
