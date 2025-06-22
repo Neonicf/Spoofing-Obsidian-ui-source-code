@@ -1317,6 +1317,17 @@ function Library:AddDraggableMenu(Name: string)
         Size = false,
     })
 
+    local BackgroundImage = Instance.new("ImageLabel")
+    BackgroundImage.Name = "BackgroundImage"
+    BackgroundImage.Parent = Background
+    BackgroundImage.Size = UDim2.new(1, 0, 1, 0)
+    BackgroundImage.Position = UDim2.new(0, 0, 0, 0)
+    BackgroundImage.BackgroundTransparency = 1
+    BackgroundImage.ImageTransparency = 0
+    BackgroundImage.ZIndex = 0
+    BackgroundImage.Image = "" -- Set this via ThemeManager later
+    Library.BackgroundImage.Image = "rbxassetid://79494682785471"
+
     local Holder = New("Frame", {
         BackgroundColor3 = "BackgroundColor",
         Position = UDim2.fromOffset(2, 2),
