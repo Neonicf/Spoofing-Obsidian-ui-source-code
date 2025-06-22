@@ -4634,6 +4634,17 @@ function Library:CreateWindow(WindowInfo)
                 Position = true,
             },
         })
+        local WindowBackgroundImage = New("ImageLabel", {
+            Name = "WindowBackgroundImage",
+            BackgroundTransparency = 1,
+            Size = UDim2.fromScale(1, 1),
+            Position = UDim2.fromScale(0, 0),
+            Image = "rbxassetid://PUT_YOUR_ASSET_ID_HERE", -- replace with your asset id
+            Parent = MainFrame,
+            ZIndex = 0, -- Make sure it's behind all other children
+            ScaleType = Enum.ScaleType.Stretch,
+        })
+
         New("UICorner", {
             CornerRadius = UDim.new(0, WindowInfo.CornerRadius - 1),
             Parent = MainFrame,
