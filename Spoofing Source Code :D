@@ -1322,13 +1322,14 @@ function Library:AddDraggableMenu(Name: string)
         Position = UDim2.fromOffset(2, 2),
         Size = UDim2.new(1, -4, 1, -4),
         Parent = Background,
+        BackgroundTransparency = 1,
     })
 
     local BackgroundImage = New("ImageLabel", {
         Image = "rbxassetid://79494682785471", -- Replace with your asset id
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 1,
-        ZIndex = 11, -- Make sure everything else is ZIndex 1 or more
+        ZIndex = -999, -- Make sure everything else is ZIndex 1 or more
         Parent = Holder,
     })
 
